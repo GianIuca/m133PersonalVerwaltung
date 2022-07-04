@@ -9,4 +9,10 @@ public class MainController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/personenBearbeitung")
+    public String personenBearbeitung() {
+        return "personenBearbeitung";
+    }
+
 }
