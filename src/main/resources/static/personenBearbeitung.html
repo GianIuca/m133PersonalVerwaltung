@@ -11,7 +11,7 @@
 
 <div class="row">
     <div class="col-12">
-        <form th:action="@{/static/personenAdden.html/{id} (id=${person.id})}" th:object="${person}" method="post"
+        <form th:action="@{/personenBearbeitung.html/{id} (id=${person.id})}" th:object="${person}" method="post"
               onSubmit="return confirm('Commit edit?');">
             <div class="form-group">
                 <label for="Firstname">Firstname</label>

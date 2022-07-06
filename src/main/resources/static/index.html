@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table for Personenverwaltung</title>
+</head>
+<body>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Firstname</th>
+        <th scope="col">Lastname</th>
+        <th scope="col">Email</th>
+        <th scope="col">Birthdate</th>
+        <th scope="col">Gender</th>
+    </tr>
+    </thead>
+    <tbody th:each="person: ${persons}">
+    <tr>
+        <th scope="row" th:text="${person.firstname}"></th>
+        <td th:text="${person.lastname}"></td>
+        <td th:text="${person.email}"></td>
+        <td th:text="${person.today}"></td>
+        <td th:text="${person.gender}"></td>
+        <td>
+            <form method="POST" th:action="@{personLoeschen/{personId} (personId=${person.id})}"
+                  onSubmit="return confirm('Do you really want to delete this person?');">
+                <button class="btn btn-danger" type="submit">delete</button>
+            </form>
+        </td>
+        <td>
+            <a th:href="@{/personenBearbeitung.html/{id} (id=${person.id})}">
+                <button class="btn btn-outline-primary">edit</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
