@@ -2,15 +2,15 @@ version: '3'
 
 services:
   mysqldb:
-    image: mysql:8.0.29
+    image: mysql:5.7
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - ./db_data:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: Fg004Rex
+
 
   phpmyadmin:
     depends_on:
