@@ -2,6 +2,7 @@ package ch.bbw.m133personenverwaltung;
 
 import ch.bbw.m133personenverwaltung.model.Person;
 import ch.bbw.m133personenverwaltung.model.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,40 +11,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.ParseException;
 import java.util.List;
 
 
 @Controller
 public class MainController {
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
-    private List<Person> getPersons() {
-        List<Person> persons = personRepository.findAll();
-        persons.forEach(person -> {
-            person.setToday(String.valueOf(person.getBirthdate()));
-        });
-        return persons;
+    @Autowired
+    public MainController(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
+
+    @GetMapping("/")
+    public String index(Model model) {
+        System.out.println(personRepository.findAll());
+        model.addAttribute("persons", getPersons()); // getPersons()
+        return "index";
+    }
+
+    @GetMapping("/seiteEditieren/{id}")
+    public String editForm(Model model, @PathVariable long id) {
+        model.addAttribute("person", personRepository.findById(id).get());
+        return "personenBearbeitung";
     }
 
     @GetMapping("/form")
     public String form(Model model) {
         model.addAttribute("person", new Person());
-        return "add_person";
-    }
-
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("persons", getPersons());
-        return "index";
-    }
-
-    @GetMapping("/personenBearbeitung")
-    public String personenBearbeitung() {
-        return "personenBearbeitung";
+        return "personenAdden";
     }
 
     @PostMapping("/personenAdden")
-    public String addPerson(@ModelAttribute Person person, RedirectAttributes redirectAttributes) {
+    public String addPerson(@ModelAttribute Person person, RedirectAttributes redirectAttributes, Model model) {
         try {
             person.setBirthdate(person.getBirthdate());
             personRepository.save(person);
@@ -52,11 +54,13 @@ public class MainController {
             redirectAttributes.addFlashAttribute("fail", "Person could not be added");
             e.printStackTrace();
         }
+        model.addAttribute("person", person);
         return "redirect:/";
     }
 
-    @PostMapping("/personBearbeitung/{id}")
-    public String editPerson(@PathVariable long id, @ModelAttribute Person person, RedirectAttributes attributes) {
+
+    @PostMapping("/personenBearbeitung/{id}")
+    public String editPerson(@PathVariable long id, @ModelAttribute Person person, RedirectAttributes attributes, Model model) {
         try {
             person.setBirthdate(person.getBirthdate());
             person.setId(id);
@@ -66,6 +70,7 @@ public class MainController {
             attributes.addFlashAttribute("fail", "Person could not be edited");
             e.printStackTrace();
         }
+        model.addAttribute("person", person);
         return "redirect:/";
     }
 
@@ -83,10 +88,19 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/seiteEditieren/{id}")
-    public String editForm(Model model, @PathVariable long id) {
-        model.addAttribute("person", personRepository.findById(id).get());
-        return "personBearbeitung";
+
+    private List<Person> getPersons() {
+        List<Person> persons = personRepository.findAll();
+        persons.stream().forEach(person -> {
+            try {
+                person.setToday(
+                        DateConverter.convertDate(person.getBirthdate())
+                );
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+        return persons;
     }
 
 }

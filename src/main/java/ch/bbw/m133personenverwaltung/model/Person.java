@@ -20,49 +20,39 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     @Setter
-
     private Long id;
 
     @NotNull
-    @Size(min = 1, max = 5)
+    @Size(min = 2, max = 220)
     @Getter
     @Setter
-
-    private String firstname;
+    String firstname;
 
     @NotNull
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 220)
     @Getter
     @Setter
-
     private String lastname;
-
-    @NotNull
-    @Size(min = 2, max = 20)
-    @Getter
-    @Setter
-
-    private String email;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Size(min = 10, max = 70)
-    @Getter
-    @Setter
-
-    char gender;
 
     @Email
     @Getter
     @Setter
+    private String email;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Getter
+    @Setter
     private LocalDate birthdate;
+
+    @NotNull
+    @Getter
+    @Setter
+    char gender;
 
     @Transient
     @Getter
     @Setter
-
     private String today;
-
 
 }
 

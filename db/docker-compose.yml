@@ -9,7 +9,7 @@ services:
       - ./db_data:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Fg004Rex
+      MYSQL_ROOT_PASSWORD: 123456
 
 
   phpmyadmin:

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit new Person</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/bootstrap-4.1.3/css/bootstrap.min.css}"/>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Edit new Person</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form th:action="@{/personenBearbeitung/{id} (id=${person.id})}" th:object="${person}" method="post"
+                  onSubmit="return confirm('Do you really want to edit this person?');">
+
+                <div class="form-group">
+                    <label for="Firstname">Firstname</label>
+                    <input type="text" class="form-control" id="Firstname" placeholder="Firstname..."
+                           th:field="*{firstname}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Lastname">Lastname</label>
+                    <input type="text" class="form-control" id="Lastname" placeholder="Lastname..."
+                           th:field="*{lastname}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Email">Email address</label>
+                    <input type="email" class="form-control" id="Email" aria-describedby="emailHelp"
+                           placeholder="Enter email" th:field="*{email}" required>
+                    <small id="emailHelp" class="form-text text-muted">
+                        else.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="Birthdate">Birthdate</label>
+                    <input required th:value="${person.birthdate}" th:field="*{birthdate}" id="Birthdate"
+                           class="form-control" type="date"/>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio" id="genderM" value="m"
+                           th:field="*{gender}" required>
+                    <label class="form-check-label" for="genderM">
+                        male
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio" id="genderF" value="f"
+                           th:field="*{gender}">
+                    <label class="form-check-label" for="genderF">
+                        female
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="radioE" value="idk"
+                           checked th:field="*{gender}" th:value="${person.gender}">
+                    <label class="form-check-label" for="radioE">
+                        something else
+                    </label>
+                </div>
+
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+                <script>
+                    $(document).ready(function () {
+                        $('#birthdate').dateTime({
+                            format: 'dd.mm.yyyy'
+                        });
+                    })
+                </script>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script th:src="@{/bootstrap-4.1.3/js/bootstrap.min.js}"></script>
+</body>
+</html>
